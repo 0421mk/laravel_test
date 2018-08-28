@@ -16,3 +16,11 @@ Route::get('/', function () {
 });
 
 Route::resource('articles', 'ArticlesController');
+
+// DB::listen(function ($query){
+//   var_dump($query->sql);
+// });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

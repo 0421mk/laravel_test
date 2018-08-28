@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ArticlesRequest;
 
 class ArticlesController extends Controller
 {
@@ -40,7 +41,7 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(\App\Http\Requests\ArticlesRequest $request)
+    public function store(ArticlesRequest $request)
     {
         // // return __METHOD__ . '은(는) 사용자의 입력한 폼 데이터로 새로운 Article 컬렉션을 만듭니다.';
         // $rules = [
@@ -65,11 +66,23 @@ class ArticlesController extends Controller
         // $article = \App\User::find(1)->articles()->create($request->all());
 
         // 폼 리퀘스트 클래스 사용
-        $article = \App\Uesr::find(1)->articles()->create($request->all());
+        $article = \App\User::find(1)->articles()->create($request->all());
 
         if(! $article) {
           return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
         }
+
+        // var_dump('이벤트를 던집니다.');
+        // event('article.created', [$article]);
+        // var_dump('이벤트를 던졌습니다.');
+
+        // 이벤트 채널 생성
+        // var_dump('이벤트를 던집니다.');
+        // event(new \App\Events\ArticleCreated($article));
+        // var_dump('이벤트를 던졌습니다.');
+
+        //실용적인 이벤트 시스템
+        event(new \App\Events\ArticlesEvent($article));
 
         return redirect(route('articles.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
     }

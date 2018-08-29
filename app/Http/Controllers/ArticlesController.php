@@ -99,7 +99,7 @@ class ArticlesController extends Controller
 
         // 예외처리
         $article = \App\Article::findOrFail($id);
-        return $article->toArray();
+        return view('articles.index', compact('article'));
     }
 
     /**

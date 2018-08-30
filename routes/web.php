@@ -71,3 +71,5 @@ EOT";
 });
 
 Route::get('docs/{file?}', 'DocsController@show');
+
+Route::get('docs/images/{image}', 'DocsController@image');
